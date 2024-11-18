@@ -1,4 +1,6 @@
-version: "2"
+volumes:
+  postgres_data:
+
 services:
   postgres-database:
     image: postgres
@@ -7,6 +9,8 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgresql
       - POSTGRES_DB=credentials_registration
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
   java-service:
     image: credentials-registration:1.0
     ports:
@@ -15,3 +19,5 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-database:5432/credentials_registration
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgresql
+    depends_on:
+      - postgres-database
