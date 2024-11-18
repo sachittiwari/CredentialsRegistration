@@ -19,7 +19,7 @@ Before running the application, please ensure the below components are installed
 ### Steps to run the Application
 - **Import Source Code**: Clone this repository from Git and import in your preferred IDE.
 - **Setting Up Database**:
-    - Create a new database in PostgreSQL with the name `credentials_registration1`.
+    - Create a new database in PostgreSQL with the name `credentials_registration`.
     - Update the `application.properties` file with the database connection details.
 - **Build the Application**: Build the application using the below command
     ```shell
