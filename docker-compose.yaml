@@ -1,0 +1,17 @@
+version: "2"
+services:
+  postgres-database:
+    image: postgres
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgresql
+      - POSTGRES_DB=credentials_registration
+  java-service:
+    image: credentials-registration:1.0
+    ports:
+      - "8080:8085"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-database:5432/credentials_registration
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgresql
