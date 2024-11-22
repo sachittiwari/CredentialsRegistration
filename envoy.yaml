@@ -29,10 +29,34 @@ static_resources:
                           route:
                             cluster: backend_service
                 http_filters:
+                  # JWT Authentication filter
+                  - name: envoy.filters.http.jwt_authn
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.jwt_authn.v3.JwtAuthentication
+                      providers:
+                        google_oidc:
+                          issuer: "https://accounts.google.com"
+                          remote_jwks:
+                            http_uri:
+                              uri: "https://www.googleapis.com/oauth2/v3/certs"
+                              cluster: google_jwks_cluster
+                              timeout: 5s
+                            cache_duration:
+                              seconds: 3600  # Cache the JWKS for 1 hour
+                          from_headers:
+                            - name: Authorization
+                              value_prefix: "Bearer "
+                      rules:
+                        - match:
+                            prefix: "/"  # Apply JWT validation to all paths
+                          requires:
+                            provider_name: google_oidc
+                  # Router filter
                   - name: envoy.filters.http.router
                     typed_config:
                       "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
   clusters:
+    #Backend Service Cluster
     - name: backend_service
       connect_timeout: 30s
       type: LOGICAL_DNS
@@ -47,3 +71,22 @@ static_resources:
                     socket_address:
                       address: java-service
                       port_value: 8085
+    #google JWKS Cluster
+    - name: google_jwks_cluster
+      connect_timeout: 30s
+      dns_lookup_family: V4_ONLY
+      type: LOGICAL_DNS
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+          cluster_name: google_jwks_cluster
+          endpoints:
+            - lb_endpoints:
+                - endpoint:
+                    address:
+                      socket_address:
+                        address: www.googleapis.com
+                        port_value: 443
+      transport_socket:
+          name: envoy.transport_sockets.tls
+          typed_config:
+            "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
