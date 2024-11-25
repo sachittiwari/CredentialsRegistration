@@ -32,23 +32,6 @@ public class UserOrganizationMappingServiceTest {
     UserOrganizationMappingService userOrganizationMappingService;
 
     @Test
-    public void testGetOrganizationIdByUserId_Success(){
-        //Arrange
-        Long userId = 1L;
-        List<Long> orgIds = List.of(1L,2L);
-
-        //Mock
-        when(userOrganizationMappingRepository.findOrganizationIdByUserId(userId)).thenReturn(orgIds);
-
-        //Act
-        List<Long> result = userOrganizationMappingService.getOrganizationIdByUserId(userId);
-
-        //Assert
-        assertEquals(result.size(),2);
-        verify(userOrganizationMappingRepository).findOrganizationIdByUserId(userId);
-    }
-
-    @Test
     public void testDeleteUserOrganizationMappingByUserId_Success(){
         //Arrange
         Long userId = 1L;
@@ -64,33 +47,7 @@ public class UserOrganizationMappingServiceTest {
     }
 
     @Test
-    public void testCreateUserOrganizationMapping_Success(){
-
-        //Mock
-        when(userOrganizationMappingRepository.save(UserOrgMappingTestConstants.ENTITY_1)).thenReturn(UserOrgMappingTestConstants.ENTITY_1);
-
-        //Act
-        UserOrganizationMapping result = userOrganizationMappingService.createUserOrgMapping(UserOrgMappingTestConstants.ENTITY_1);
-
-        //Assert
-        assertEquals(result.getUserId(),1L);
-        assertEquals(result.getOrganizationId(),1L);
-        verify(userOrganizationMappingRepository).save(UserOrgMappingTestConstants.ENTITY_1);
-    }
-
-    @Test
-    public void testCreateUserOrganizationMapping_throwException(){
-
-        //Mock
-        when(userOrganizationMappingRepository.save(UserOrgMappingTestConstants.ENTITY_1)).thenThrow(new RuntimeException("Unable to create"));
-
-        //Act and Assert
-        assertThrows(RuntimeException.class,()->userOrganizationMappingService.createUserOrgMapping(UserOrgMappingTestConstants.ENTITY_1));
-        verify(userOrganizationMappingRepository).save(UserOrgMappingTestConstants.ENTITY_1);
-    }
-
-    @Test
-    public void testGetMappingByUserId_success() throws OrganizationNotFoundException {
+    public void testGetAllOrganizationsByUserId_success() throws OrganizationNotFoundException {
         //Arrange
         Long userId = 1L;
         List<UserOrganizationMapping> userOrganizationMappingList = List.of(UserOrgMappingTestConstants.ENTITY_1,UserOrgMappingTestConstants.ENTITY_2);
@@ -101,7 +58,7 @@ public class UserOrganizationMappingServiceTest {
         when(organizationService.getOrganizationById(2L)).thenReturn(OrganizationTestConstants.RESPONSE_2);
 
         //Act
-        List<OrganizationResponseDTO> result = userOrganizationMappingService.getMappingByUserId(userId);
+        List<OrganizationResponseDTO> result = userOrganizationMappingService.getAllOrganizationsByUserId(userId);
 
         //Assert
         assertEquals(result.size(),2);
@@ -113,7 +70,7 @@ public class UserOrganizationMappingServiceTest {
     }
 
     @Test
-    public void testCreateUserOrgMappingByRequest_success() {
+    public void testCreateUserOrgMapping_success() {
         //Arrange
         UserOrgMappingRequestDTO requestDTO = UserOrgMappingRequestDTO.builder().userId(1L).organizationIds(List.of(1L,2L)).build();
 
@@ -121,7 +78,7 @@ public class UserOrganizationMappingServiceTest {
         when(userOrganizationMappingRepository.save(any())).thenReturn(UserOrgMappingTestConstants.ENTITY_1);
 
         //Act
-        UserOrgMappingResponseDTO result = userOrganizationMappingService.createUserOrgMappingByRequest(requestDTO);
+        UserOrgMappingResponseDTO result = userOrganizationMappingService.createUserOrgMapping(requestDTO);
 
         //Assert
         assertEquals(result.getUserId(),1L);

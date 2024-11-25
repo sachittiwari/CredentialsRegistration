@@ -57,8 +57,8 @@ public class UserController {
                     content=@Content(mediaType = "application/json",schema = @Schema()))
     })
     @PostMapping("/")
-    public UserResponseDTO createUser(@RequestBody UserRequestDTO request) {
-        return userService.createUser(request);
+    public UserResponseDTO handleLogin(@RequestBody UserRequestDTO request) {
+        return userService.handleLogin(request);
     }
 
     @Operation(summary = "Update User details for requested id",

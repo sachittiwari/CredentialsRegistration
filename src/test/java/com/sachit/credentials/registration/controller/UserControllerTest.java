@@ -49,13 +49,13 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$[0].name").value("Sachit"))
                 .andExpect(jsonPath("$[0].firstName").value("Sachit"))
                 .andExpect(jsonPath("$[0].lastName").value("Tiwari"))
-                .andExpect(jsonPath("$[0].organizationIds",hasSize(2)))
+                .andExpect(jsonPath("$[0].organizations",hasSize(2)))
                 .andExpect(jsonPath("$[1].id").value(2L))
                 .andExpect(jsonPath("$[1].subjectId").value("STE"))
                 .andExpect(jsonPath("$[1].name").value("Sachin"))
                 .andExpect(jsonPath("$[1].firstName").value("Sachin"))
                 .andExpect(jsonPath("$[1].lastName").value("Tiwari"))
-                .andExpect(jsonPath("$[1].organizationIds",hasSize(1)));
+                .andExpect(jsonPath("$[1].organizations",hasSize(1)));
 
     }
 
@@ -72,7 +72,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.name").value("Sachit"))
                 .andExpect(jsonPath("$.firstName").value("Sachit"))
                 .andExpect(jsonPath("$.lastName").value("Tiwari"))
-                .andExpect(jsonPath("$.organizationIds",hasSize(2)));
+                .andExpect(jsonPath("$.organizations",hasSize(2)));
     }
 
     @Test
@@ -89,10 +89,10 @@ public class UserControllerTest {
     }
 
     @Test
-    public void createUser_success() throws Exception {
+    public void handleLogin_success() throws Exception {
 
         //mock data
-        when(userService.createUser(UserTestConstants.REQUEST)).thenReturn(UserTestConstants.RESPONSE_1);
+        when(userService.handleLogin(UserTestConstants.REQUEST)).thenReturn(UserTestConstants.RESPONSE_1);
 
         //Act and Assert
         mockMvc.perform(post("/user/")
@@ -104,14 +104,14 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.name").value("Sachit"))
                 .andExpect(jsonPath("$.firstName").value("Sachit"))
                 .andExpect(jsonPath("$.lastName").value("Tiwari"))
-                .andExpect(jsonPath("$.organizationIds",hasSize(2)));
+                .andExpect(jsonPath("$.organizations",hasSize(2)));
 
     }
 
     @Test
-    public void createUser_throwException() throws Exception {
+    public void handleLogin_throwException() throws Exception {
         //mock data
-        when(userService.createUser(UserTestConstants.REQUEST)).thenThrow(new RuntimeException("Error during Creation"));
+        when(userService.handleLogin(UserTestConstants.REQUEST)).thenThrow(new RuntimeException("Error during Creation"));
 
         //Act and Assert
         mockMvc.perform(post("/user/")
@@ -137,7 +137,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.name").value("Sachit"))
                 .andExpect(jsonPath("$.firstName").value("Sachit"))
                 .andExpect(jsonPath("$.lastName").value("Tiwari"))
-                .andExpect(jsonPath("$.organizationIds",hasSize(2)));
+                .andExpect(jsonPath("$.organizations",hasSize(2)));
 
     }
 

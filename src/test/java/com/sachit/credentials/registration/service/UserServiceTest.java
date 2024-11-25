@@ -1,5 +1,6 @@
 package com.sachit.credentials.registration.service;
 
+import com.sachit.credentials.registration.constants.OrganizationTestConstants;
 import com.sachit.credentials.registration.constants.UserOrgMappingTestConstants;
 import com.sachit.credentials.registration.constants.UserTestConstants;
 import com.sachit.credentials.registration.entity.User;
@@ -43,21 +44,21 @@ public class UserServiceTest {
 
         //mock data
         when(userRepository.findAll()).thenReturn(userList);
-        when(userOrganizationMappingService.getOrganizationIdByUserId(1L)).thenReturn(List.of(1L,2L));
-        when(userOrganizationMappingService.getOrganizationIdByUserId(2L)).thenReturn(List.of(2L));
+        when(userOrganizationMappingService.getAllOrganizationsByUserId(1L)).thenReturn(List.of(OrganizationTestConstants.RESPONSE_1,OrganizationTestConstants.RESPONSE_2));
+        when(userOrganizationMappingService.getAllOrganizationsByUserId(2L)).thenReturn(List.of(OrganizationTestConstants.RESPONSE_2));
 
         //Act
         List<UserResponseDTO> result = userService.fetchAllUsers();
 
         //Assert
         assertEquals(result.size(),2);
-        assertEquals(result.get(0).getOrganizationIds(),List.of(1L,2L));
-        assertEquals(result.get(1).getOrganizationIds(),List.of(2L));
+        assertEquals(result.get(0).getOrganizations(),List.of(OrganizationTestConstants.RESPONSE_1,OrganizationTestConstants.RESPONSE_2));
+        assertEquals(result.get(1).getOrganizations(),List.of(OrganizationTestConstants.RESPONSE_2));
         assertEquals(result.get(0).getName(),"Sachit");
         assertEquals(result.get(1).getName(),"Sachin");
         verify(userRepository).findAll();
-        verify(userOrganizationMappingService).getOrganizationIdByUserId(1L);
-        verify(userOrganizationMappingService).getOrganizationIdByUserId(2L);
+        verify(userOrganizationMappingService).getAllOrganizationsByUserId(1L);
+        verify(userOrganizationMappingService).getAllOrganizationsByUserId(2L);
     }
 
     @Test
@@ -80,7 +81,7 @@ public class UserServiceTest {
 
         //mock data
         when(userRepository.findById(1L)).thenReturn(user);
-        when(userOrganizationMappingService.getOrganizationIdByUserId(1L)).thenReturn(List.of(1L,2L));
+        when(userOrganizationMappingService.getAllOrganizationsByUserId(1L)).thenReturn(List.of(OrganizationTestConstants.RESPONSE_1,OrganizationTestConstants.RESPONSE_2));
 
         //Act
         UserResponseDTO result = userService.getUserById(1L);
@@ -91,27 +92,21 @@ public class UserServiceTest {
         assertEquals(result.getFirstName(),"Sachit");
         assertEquals(result.getLastName(),"Tiwari");
         assertEquals(result.getSubjectId(),"ST");
-        assertEquals(result.getOrganizationIds(),List.of(1L,2L));
+        assertEquals(result.getOrganizations(),List.of(OrganizationTestConstants.RESPONSE_1,OrganizationTestConstants.RESPONSE_2));
 
         verify(userRepository).findById(1L);
-        verify(userOrganizationMappingService).getOrganizationIdByUserId(1L);
+        verify(userOrganizationMappingService).getAllOrganizationsByUserId(1L);
     }
 
 
     @Test
-    public void testCreateUser_returnResponse() {
-        //Arrange
-        UserOrganizationMapping userOrganizationMapping1 = UserOrganizationMapping.builder().userId(1L).organizationId(1L).build();
-        UserOrganizationMapping userOrganizationMapping2 = UserOrganizationMapping.builder().userId(1L).organizationId(2L).build();
-
+    public void testHandleLogin_userCreated() {
         //mock data
         when(userRepository.save(userMapper.toUser(UserTestConstants.REQUEST))).thenReturn(UserTestConstants.ENTITY_1);
-        when(userOrganizationMappingService.createUserOrgMapping(userOrganizationMapping1)).thenReturn(UserOrgMappingTestConstants.ENTITY_1);
-        when(userOrganizationMappingService.createUserOrgMapping(userOrganizationMapping2)).thenReturn(UserOrgMappingTestConstants.ENTITY_2);
-        when(userOrganizationMappingService.getOrganizationIdByUserId(1L)).thenReturn(List.of(1L,2L));
+        when(userOrganizationMappingService.getAllOrganizationsByUserId(1L)).thenReturn(List.of());
 
         //Act
-        UserResponseDTO result = userService.createUser(UserTestConstants.REQUEST);
+        UserResponseDTO result = userService.handleLogin(UserTestConstants.REQUEST);
 
         //Assert
         assertEquals(result.getId(),1L);
@@ -119,19 +114,39 @@ public class UserServiceTest {
         assertEquals(result.getFirstName(),"Sachit");
         assertEquals(result.getLastName(),"Tiwari");
         assertEquals(result.getSubjectId(),"ST");
-        assertEquals(result.getOrganizationIds(),List.of(1L,2L));
+        assertEquals(result.getOrganizations(),List.of());
         verify(userRepository).save(userMapper.toUser(UserTestConstants.REQUEST));
-        verify(userOrganizationMappingService).createUserOrgMapping(userOrganizationMapping2);
-        verify(userOrganizationMappingService).createUserOrgMapping(userOrganizationMapping1);
+        verify(userOrganizationMappingService).getAllOrganizationsByUserId(1L);
     }
 
     @Test
-    public void testCreateUser_throwException() {
+    public void testHandleLogin_userExists() {
+        //mock data
+        when(userRepository.save(userMapper.toUser(UserTestConstants.REQUEST))).thenReturn(UserTestConstants.ENTITY_1);
+        when(userOrganizationMappingService.getAllOrganizationsByUserId(1L)).thenReturn(List.of(OrganizationTestConstants.RESPONSE_1,OrganizationTestConstants.RESPONSE_2));
+        when(userRepository.findBySubjectId("ST")).thenReturn(UserTestConstants.ENTITY_1);
+
+        //Act
+        UserResponseDTO result = userService.handleLogin(UserTestConstants.REQUEST);
+
+        //Assert
+        assertEquals(result.getId(),1L);
+        assertEquals(result.getName(),"Sachit");
+        assertEquals(result.getFirstName(),"Sachit");
+        assertEquals(result.getLastName(),"Tiwari");
+        assertEquals(result.getSubjectId(),"ST");
+        assertEquals(result.getOrganizations(),List.of(OrganizationTestConstants.RESPONSE_1,OrganizationTestConstants.RESPONSE_2));
+        verify(userRepository).findBySubjectId("ST");
+        verify(userOrganizationMappingService).getAllOrganizationsByUserId(1L);
+    }
+
+    @Test
+    public void testHandleLogin_throwException() {
         //mock data
         when(userRepository.save(userMapper.toUser(UserTestConstants.REQUEST))).thenThrow(new RuntimeException("Error during create"));
 
         //Act and Assert
-        assertThrows(RuntimeException.class,()->userService.createUser(UserTestConstants.REQUEST));
+        assertThrows(RuntimeException.class,()->userService.handleLogin(UserTestConstants.REQUEST));
     }
 
 
@@ -145,7 +160,7 @@ public class UserServiceTest {
         //mock data
         when(userRepository.existsById(id)).thenReturn(true);
         when(userRepository.save(user)).thenReturn(UserTestConstants.ENTITY_1);
-        when(userOrganizationMappingService.getOrganizationIdByUserId(1L)).thenReturn(List.of(1L,2L));
+        when(userOrganizationMappingService.getAllOrganizationsByUserId(1L)).thenReturn(List.of(OrganizationTestConstants.RESPONSE_1,OrganizationTestConstants.RESPONSE_2));
 
         //Act
         UserResponseDTO result = userService.updateUserById(id,UserTestConstants.REQUEST);
@@ -156,10 +171,10 @@ public class UserServiceTest {
         assertEquals(result.getFirstName(),"Sachit");
         assertEquals(result.getLastName(),"Tiwari");
         assertEquals(result.getSubjectId(),"ST");
-        assertEquals(result.getOrganizationIds(),List.of(1L,2L));
+        assertEquals(result.getOrganizations(),List.of(OrganizationTestConstants.RESPONSE_1,OrganizationTestConstants.RESPONSE_2));
         verify(userRepository).existsById(id);
         verify(userRepository).save(user);
-        verify(userOrganizationMappingService).getOrganizationIdByUserId(1L);
+        verify(userOrganizationMappingService).getAllOrganizationsByUserId(1L);
     }
 
     @Test

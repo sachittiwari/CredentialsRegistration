@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Builder
 public class CredentialsRequestDTO {
 
-    private String name;
     private Long userId;
     private Long organizationId;
 }

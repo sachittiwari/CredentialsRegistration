@@ -12,20 +12,20 @@ public class CredentialsApplicationTestConstants {
     public static final LocalDateTime EXPIRY_DATE = CREATION_DATE.plusDays(2);
     public static final String CREDENTIAL_NOT_FOUND = "Credential not found for the given id: ";
     public static final CredentialsResponseDTO RESPONSE_1 = CredentialsResponseDTO.builder()
-                                                            .id(1L).name("Cred 1").clientId("123-456").clientSecret("******").creationDate(CREATION_DATE)
+                                                            .id(1L).clientId("123-456").clientSecret("******").creationDate(CREATION_DATE)
                                                             .expiryDate(EXPIRY_DATE).userId(1L).organizationId(1L).build();
     public static final CredentialsResponseDTO RESPONSE_2 = CredentialsResponseDTO.builder()
-            .id(2L).name("Cred 2").clientId("456-123").clientSecret("******").creationDate(CREATION_DATE)
+            .id(2L).clientId("456-123").clientSecret("******").creationDate(CREATION_DATE)
             .expiryDate(EXPIRY_DATE).userId(2L).organizationId(1L).build();
 
-    public static final CredentialsRequestDTO REQUEST = CredentialsRequestDTO.builder().name("New Cred").userId(1L).organizationId(1L).build();
+    public static final CredentialsRequestDTO REQUEST = CredentialsRequestDTO.builder().userId(1L).organizationId(1L).build();
     public static final CredentialsResponseDTO UNMASKED_RESPONSE = CredentialsResponseDTO.builder()
-            .id(1L).name("Cred 1").clientId("123-456").clientSecret("abcdyeih1234qwer").creationDate(CREATION_DATE)
+            .id(1L).clientId("123-456").clientSecret("abcdyeih1234qwer").creationDate(CREATION_DATE)
             .expiryDate(EXPIRY_DATE).userId(1L).organizationId(1L).build();
 
-    public static final Credentials ENTITY_1 = Credentials.builder().id(1L).name("Cred 1").clientId("123")
+    public static final Credentials ENTITY_1 = Credentials.builder().id(1L).clientId("123")
             .clientSecret("abcdyeih1234qwer").creationDate(CREATION_DATE).expiryDate(EXPIRY_DATE).userId(1L).organizationId(1L).build();
 
-    public static final Credentials ENTITY_2 = Credentials.builder().id(2L).name("Cred 2").clientId("456")
+    public static final Credentials ENTITY_2 = Credentials.builder().id(2L).clientId("456")
             .clientSecret("abcdyeih1234qwee").creationDate(CREATION_DATE).expiryDate(EXPIRY_DATE).userId(2L).organizationId(1L).build();
 }

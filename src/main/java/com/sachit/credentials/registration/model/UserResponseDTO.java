@@ -18,5 +18,5 @@ public class UserResponseDTO {
     private String name;
     private String firstName;
     private String lastName;
-    private List<Long> organizationIds;
+    private List<OrganizationResponseDTO> organizations;
 }

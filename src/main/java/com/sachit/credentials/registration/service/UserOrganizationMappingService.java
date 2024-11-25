@@ -22,12 +22,8 @@ public class UserOrganizationMappingService {
 
     private final OrganizationService organizationService;
 
-    public List<Long> getOrganizationIdByUserId(Long userId) {
-        log.debug("Inside getOrganizationIdByUserId method: ", userId);
-        return userOrganizationMappingRepository.findOrganizationIdByUserId(userId);
-    }
 
-    public List<OrganizationResponseDTO> getMappingByUserId(Long userId){
+    public List<OrganizationResponseDTO> getAllOrganizationsByUserId(Long userId){
         log.debug("Inside getMappingByUserId method: ", userId);
         List<OrganizationResponseDTO> organizations = new ArrayList<>();
         userOrganizationMappingRepository.findByUserId(userId).forEach(mapping -> {
@@ -46,12 +42,8 @@ public class UserOrganizationMappingService {
         userOrganizationMappingRepository.deleteAllByUserId(userId);
     }
 
-    public UserOrganizationMapping createUserOrgMapping(UserOrganizationMapping mapping) {
-        log.debug("Inside createUserOrgMapping method: ", mapping);
-        return userOrganizationMappingRepository.save(mapping);
-    }
 
-    public UserOrgMappingResponseDTO createUserOrgMappingByRequest(UserOrgMappingRequestDTO request) {
+    public UserOrgMappingResponseDTO createUserOrgMapping(UserOrgMappingRequestDTO request) {
         log.debug("Inside createUserOrgMappingByRequest method: ", request);
         request.getOrganizationIds().forEach(organizationId -> userOrganizationMappingRepository
                             .save(UserOrganizationMapping.builder()

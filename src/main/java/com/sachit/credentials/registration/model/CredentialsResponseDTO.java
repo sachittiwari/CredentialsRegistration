@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 public class CredentialsResponseDTO {
 
     private Long id;
-    private String name;
     private String clientId;
     private String clientSecret;
     private LocalDateTime creationDate;

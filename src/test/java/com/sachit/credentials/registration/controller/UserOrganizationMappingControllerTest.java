@@ -30,9 +30,9 @@ public class UserOrganizationMappingControllerTest {
     ObjectMapper objectMapper;
 
     @Test
-    public void testGetOrganizationByUserId_success() throws Exception {
+    public void testGetOrganizationsByUserId_success() throws Exception {
         //mock data
-        when(userOrganizationMappingService.getMappingByUserId(1L)).thenReturn(List.of(OrganizationTestConstants.RESPONSE_1,OrganizationTestConstants.RESPONSE_2));
+        when(userOrganizationMappingService.getAllOrganizationsByUserId(1L)).thenReturn(List.of(OrganizationTestConstants.RESPONSE_1,OrganizationTestConstants.RESPONSE_2));
 
         //Act and Assert
         mockMvc.perform(get("/user-org-mapping/")
@@ -54,7 +54,7 @@ public class UserOrganizationMappingControllerTest {
     public void createUserOrgMapping_success() throws Exception {
 
         //mock data
-        when(userOrganizationMappingService.createUserOrgMappingByRequest(UserOrgMappingTestConstants.REQUEST)).thenReturn(UserOrgMappingTestConstants.RESPONSE);
+        when(userOrganizationMappingService.createUserOrgMapping(UserOrgMappingTestConstants.REQUEST)).thenReturn(UserOrgMappingTestConstants.RESPONSE);
 
         //Act and Assert
         mockMvc.perform(post("/user-org-mapping/")
@@ -69,7 +69,7 @@ public class UserOrganizationMappingControllerTest {
     @Test
     public void createUserOrgMapping_throwException() throws Exception {
         //mock data
-        when(userOrganizationMappingService.createUserOrgMappingByRequest(UserOrgMappingTestConstants.REQUEST)).thenThrow(new RuntimeException("Error during Creation"));
+        when(userOrganizationMappingService.createUserOrgMapping(UserOrgMappingTestConstants.REQUEST)).thenThrow(new RuntimeException("Error during Creation"));
 
         //Act and Assert
         mockMvc.perform(post("/user-org-mapping/")

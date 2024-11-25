@@ -17,6 +17,5 @@ public class UserRequestDTO {
     private String name;
     private String firstName;
     private String lastName;
-    private List<Long> organizationIds;
 
 }

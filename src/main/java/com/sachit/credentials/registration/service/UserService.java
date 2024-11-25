@@ -65,16 +65,12 @@ public class UserService {
      * @return Newly Created User
      */
     @Transactional
-    public UserResponseDTO createUser(UserRequestDTO request) {
-        log.debug("Inside createUser: ",request);
+    public UserResponseDTO handleLogin(UserRequestDTO request) {
+        log.debug("Inside handleLogin: "+request);
+        User existingUser = userRepository.findBySubjectId(request.getSubjectId());
+        if(existingUser != null)
+            return convertUserToUserResponseDTO(existingUser);
         User user = userRepository.save(userMapper.toUser(request));
-        request.getOrganizationIds().forEach(organizationId -> {
-            UserOrganizationMapping userOrganizationMapping = UserOrganizationMapping.builder()
-                                                                .userId(user.getId())
-                                                                .organizationId(organizationId)
-                                                                .build();
-            userOrganizationMappingService.createUserOrgMapping(userOrganizationMapping);
-        });
         return convertUserToUserResponseDTO(user);
     }
 
@@ -124,7 +120,7 @@ public class UserService {
     private UserResponseDTO convertUserToUserResponseDTO(User user) {
         log.debug("Inside convertUserToUserResponseDTO: ",user);
         UserResponseDTO userResponseDTO = userMapper.toUserResponseDTO(user);
-        userResponseDTO.setOrganizationIds(userOrganizationMappingService.getOrganizationIdByUserId(user.getId()));
+        userResponseDTO.setOrganizations(userOrganizationMappingService.getAllOrganizationsByUserId(user.getId()));
         return userResponseDTO;
     }
 }

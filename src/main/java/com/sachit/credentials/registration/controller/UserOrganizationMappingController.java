@@ -29,7 +29,7 @@ public class UserOrganizationMappingController {
     })
     @GetMapping("/")
     public List<OrganizationResponseDTO> getOrganizationsByUserId(@RequestParam Long userId){
-        return userOrganizationMappingService.getMappingByUserId(userId);
+        return userOrganizationMappingService.getAllOrganizationsByUserId(userId);
     }
 
     @Operation(summary = "Create a new User Organization Mapping",
@@ -41,7 +41,7 @@ public class UserOrganizationMappingController {
                     content=@Content(mediaType = "application/json",schema = @Schema()))
     })
     @PostMapping("/")
-    public UserOrgMappingResponseDTO createUser(@RequestBody UserOrgMappingRequestDTO request) {
-        return userOrganizationMappingService.createUserOrgMappingByRequest(request);
+    public UserOrgMappingResponseDTO createUserOrgMapping(@RequestBody UserOrgMappingRequestDTO request) {
+        return userOrganizationMappingService.createUserOrgMapping(request);
     }
 }

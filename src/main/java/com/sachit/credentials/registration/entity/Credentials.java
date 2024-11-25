@@ -21,9 +21,6 @@ public class Credentials {
     @Column(name = "CREDENTIAL_ID")
     private Long id;
 
-    @Column(name = "NAME")
-    private String name;
-
     @Column(name = "CLIENT_ID")
     private String clientId;
 

@@ -76,7 +76,6 @@ public class CredentialsServiceTest {
 
         //Assert
         assertEquals(result.getId(),1L);
-        assertEquals(result.getName(),"Cred 1");
         assertEquals(result.getClientId(),"123");
         assertEquals(result.getUserId(),1L);
         assertEquals(result.getOrganizationId(),1L);
@@ -94,7 +93,6 @@ public class CredentialsServiceTest {
 
         //Assert
         assertEquals(result.getId(),1L);
-        assertEquals(result.getName(),"Cred 1");
         assertEquals(result.getClientId(),"123");
         assertEquals(result.getUserId(),1L);
         assertEquals(result.getOrganizationId(),1L);
@@ -126,7 +124,6 @@ public class CredentialsServiceTest {
 
         //Assert
         assertEquals(result.getId(),2L);
-        assertEquals(result.getName(),"Cred 2");
         assertEquals(result.getClientId(),"456");
         assertEquals(result.getUserId(),2L);
         assertEquals(result.getOrganizationId(),1L);
