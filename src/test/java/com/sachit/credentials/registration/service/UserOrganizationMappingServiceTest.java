@@ -16,7 +16,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -61,9 +60,9 @@ public class UserOrganizationMappingServiceTest {
         List<OrganizationResponseDTO> result = userOrganizationMappingService.getAllOrganizationsByUserId(userId);
 
         //Assert
-        assertEquals(result.size(),2);
-        assertEquals(result.get(0).getId(),1L);
-        assertEquals(result.get(1).getId(),2L);
+        assertEquals(2,result.size());
+        assertEquals(1L,result.get(0).getId());
+        assertEquals(2L,result.get(1).getId());
         verify(userOrganizationMappingRepository).findByUserId(userId);
         verify(organizationService).getOrganizationById(1L);
         verify(organizationService).getOrganizationById(2L);
@@ -81,9 +80,9 @@ public class UserOrganizationMappingServiceTest {
         UserOrgMappingResponseDTO result = userOrganizationMappingService.createUserOrgMapping(requestDTO);
 
         //Assert
-        assertEquals(result.getUserId(),1L);
-        assertEquals(result.getOrganizationIds().get(0),1L);
-        assertEquals(result.getOrganizationIds().get(1),2L);
+        assertEquals(1L,result.getUserId());
+        assertEquals(1L,result.getOrganizationIds().get(0));
+        assertEquals(2L,result.getOrganizationIds().get(1));
         verify(userOrganizationMappingRepository,times(2)).save(any());
     }
 }

@@ -43,7 +43,7 @@ public class OrganizationServiceTest {
         List<OrganizationResponseDTO> result = organizationService.fetchAllOrganizations();
 
         //Assert
-        assertEquals(result.size(),2);
+        assertEquals(2,result.size());
         assertEquals(result.get(0).getId(),OrganizationTestConstants.ENTITY_1.getId());
         assertEquals(result.get(1).getId(),OrganizationTestConstants.ENTITY_2.getId());
         verify(organizationRepository).findAll();
@@ -74,10 +74,10 @@ public class OrganizationServiceTest {
         OrganizationResponseDTO result = organizationService.getOrganizationById(1L);
 
         //Assert
-        assertEquals(result.getId(),1L);
-        assertEquals(result.getName(),"Org 1");
-        assertEquals(result.getSapId(),"SAP 1");
-        assertEquals(result.getVatNumber(),"VAT 1");
+        assertEquals(1L,result.getId());
+        assertEquals("Org 1",result.getName());
+        assertEquals("SAP 1",result.getSapId());
+        assertEquals("VAT 1",result.getVatNumber());
 
         verify(organizationRepository).findById(1L);
     }
@@ -91,10 +91,10 @@ public class OrganizationServiceTest {
         OrganizationResponseDTO result = organizationService.createOrganization(OrganizationTestConstants.REQUEST);
 
         //Assert
-        assertEquals(result.getId(),1L);
-        assertEquals(result.getName(),"Org 1");
-        assertEquals(result.getSapId(),"SAP 1");
-        assertEquals(result.getVatNumber(),"VAT 1");
+        assertEquals(1L,result.getId(),1L);
+        assertEquals("Org 1",result.getName());
+        assertEquals("SAP 1",result.getSapId());
+        assertEquals("VAT 1",result.getVatNumber());
         verify(organizationRepository).save(organizationMapper.toOrganization(OrganizationTestConstants.REQUEST));
     }
 
@@ -122,10 +122,10 @@ public class OrganizationServiceTest {
         OrganizationResponseDTO result = organizationService.updateOrganizationById(id,OrganizationTestConstants.REQUEST);
 
         //Assert
-        assertEquals(result.getId(),2L);
-        assertEquals(result.getName(),"Org 2");
-        assertEquals(result.getSapId(),"SAP 2");
-        assertEquals(result.getVatNumber(),"VAT 2");
+        assertEquals(2L,result.getId());
+        assertEquals("Org 2",result.getName());
+        assertEquals("SAP 2",result.getSapId());
+        assertEquals("VAT 2",result.getVatNumber());
         verify(organizationRepository).existsById(id);
         verify(organizationRepository).save(OrganizationTestConstants.ENTITY_2);
     }

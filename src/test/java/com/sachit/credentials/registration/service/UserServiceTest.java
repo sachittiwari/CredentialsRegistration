@@ -1,10 +1,8 @@
 package com.sachit.credentials.registration.service;
 
 import com.sachit.credentials.registration.constants.OrganizationTestConstants;
-import com.sachit.credentials.registration.constants.UserOrgMappingTestConstants;
 import com.sachit.credentials.registration.constants.UserTestConstants;
 import com.sachit.credentials.registration.entity.User;
-import com.sachit.credentials.registration.entity.UserOrganizationMapping;
 import com.sachit.credentials.registration.exception.UserNotFoundException;
 import com.sachit.credentials.registration.mapper.UserMapper;
 import com.sachit.credentials.registration.model.UserResponseDTO;
@@ -51,11 +49,11 @@ public class UserServiceTest {
         List<UserResponseDTO> result = userService.fetchAllUsers();
 
         //Assert
-        assertEquals(result.size(),2);
+        assertEquals(2,result.size());
         assertEquals(result.get(0).getOrganizations(),List.of(OrganizationTestConstants.RESPONSE_1,OrganizationTestConstants.RESPONSE_2));
         assertEquals(result.get(1).getOrganizations(),List.of(OrganizationTestConstants.RESPONSE_2));
-        assertEquals(result.get(0).getName(),"Sachit");
-        assertEquals(result.get(1).getName(),"Sachin");
+        assertEquals("Sachit",result.get(0).getName());
+        assertEquals("Sachin",result.get(1).getName());
         verify(userRepository).findAll();
         verify(userOrganizationMappingService).getAllOrganizationsByUserId(1L);
         verify(userOrganizationMappingService).getAllOrganizationsByUserId(2L);
@@ -87,11 +85,11 @@ public class UserServiceTest {
         UserResponseDTO result = userService.getUserById(1L);
 
         //Assert
-        assertEquals(result.getId(),1L);
-        assertEquals(result.getName(),"Sachit");
-        assertEquals(result.getFirstName(),"Sachit");
-        assertEquals(result.getLastName(),"Tiwari");
-        assertEquals(result.getSubjectId(),"ST");
+        assertEquals(1L,result.getId());
+        assertEquals("Sachit",result.getName());
+        assertEquals("Sachit",result.getFirstName());
+        assertEquals("Tiwari",result.getLastName());
+        assertEquals("ST",result.getSubjectId());
         assertEquals(result.getOrganizations(),List.of(OrganizationTestConstants.RESPONSE_1,OrganizationTestConstants.RESPONSE_2));
 
         verify(userRepository).findById(1L);
@@ -109,11 +107,11 @@ public class UserServiceTest {
         UserResponseDTO result = userService.handleLogin(UserTestConstants.REQUEST);
 
         //Assert
-        assertEquals(result.getId(),1L);
-        assertEquals(result.getName(),"Sachit");
-        assertEquals(result.getFirstName(),"Sachit");
-        assertEquals(result.getLastName(),"Tiwari");
-        assertEquals(result.getSubjectId(),"ST");
+        assertEquals(1L,result.getId());
+        assertEquals("Sachit",result.getName());
+        assertEquals("Sachit",result.getFirstName());
+        assertEquals("Tiwari",result.getLastName());
+        assertEquals("ST",result.getSubjectId());
         assertEquals(result.getOrganizations(),List.of());
         verify(userRepository).save(userMapper.toUser(UserTestConstants.REQUEST));
         verify(userOrganizationMappingService).getAllOrganizationsByUserId(1L);
@@ -130,11 +128,11 @@ public class UserServiceTest {
         UserResponseDTO result = userService.handleLogin(UserTestConstants.REQUEST);
 
         //Assert
-        assertEquals(result.getId(),1L);
-        assertEquals(result.getName(),"Sachit");
-        assertEquals(result.getFirstName(),"Sachit");
-        assertEquals(result.getLastName(),"Tiwari");
-        assertEquals(result.getSubjectId(),"ST");
+        assertEquals(1L,result.getId());
+        assertEquals("Sachit",result.getName());
+        assertEquals("Sachit",result.getFirstName());
+        assertEquals("Tiwari",result.getLastName());
+        assertEquals("ST",result.getSubjectId());
         assertEquals(result.getOrganizations(),List.of(OrganizationTestConstants.RESPONSE_1,OrganizationTestConstants.RESPONSE_2));
         verify(userRepository).findBySubjectId("ST");
         verify(userOrganizationMappingService).getAllOrganizationsByUserId(1L);
@@ -166,11 +164,11 @@ public class UserServiceTest {
         UserResponseDTO result = userService.updateUserById(id,UserTestConstants.REQUEST);
 
         //Assert
-        assertEquals(result.getId(),1L);
-        assertEquals(result.getName(),"Sachit");
-        assertEquals(result.getFirstName(),"Sachit");
-        assertEquals(result.getLastName(),"Tiwari");
-        assertEquals(result.getSubjectId(),"ST");
+        assertEquals(1L,result.getId());
+        assertEquals("Sachit",result.getName());
+        assertEquals("Sachit",result.getFirstName());
+        assertEquals("Tiwari",result.getLastName());
+        assertEquals("ST",result.getSubjectId());
         assertEquals(result.getOrganizations(),List.of(OrganizationTestConstants.RESPONSE_1,OrganizationTestConstants.RESPONSE_2));
         verify(userRepository).existsById(id);
         verify(userRepository).save(user);

@@ -44,7 +44,7 @@ public class CredentialsServiceTest {
         List<CredentialsResponseDTO> result = credentialsService.fetchAllCredentials(1L);
 
         //Assert
-        assertEquals(result.size(),2);
+        assertEquals(2,result.size());
         assertEquals(result.get(0).getId(),CredentialsApplicationTestConstants.ENTITY_1.getId());
         assertEquals(result.get(1).getId(),CredentialsApplicationTestConstants.ENTITY_2.getId());
         verify(credentialsRepository).findAllByOrganizationId(1L);
@@ -75,10 +75,10 @@ public class CredentialsServiceTest {
         CredentialsResponseDTO result = credentialsService.getCredentialById(1L);
 
         //Assert
-        assertEquals(result.getId(),1L);
-        assertEquals(result.getClientId(),"123");
-        assertEquals(result.getUserId(),1L);
-        assertEquals(result.getOrganizationId(),1L);
+        assertEquals(1L,result.getId());
+        assertEquals("123",result.getClientId());
+        assertEquals(1L,result.getUserId());
+        assertEquals(1L,result.getOrganizationId());
 
         verify(credentialsRepository).findById(1L);
     }
@@ -92,10 +92,10 @@ public class CredentialsServiceTest {
         CredentialsResponseDTO result = credentialsService.createCredentials(CredentialsApplicationTestConstants.REQUEST);
 
         //Assert
-        assertEquals(result.getId(),1L);
-        assertEquals(result.getClientId(),"123");
-        assertEquals(result.getUserId(),1L);
-        assertEquals(result.getOrganizationId(),1L);
+        assertEquals(1L,result.getId());
+        assertEquals("123",result.getClientId());
+        assertEquals(1L,result.getUserId());
+        assertEquals(1L,result.getOrganizationId());
         verify(credentialsRepository).save(any());
     }
 
@@ -123,10 +123,10 @@ public class CredentialsServiceTest {
         CredentialsResponseDTO result = credentialsService.updateCredentialsById(id);
 
         //Assert
-        assertEquals(result.getId(),2L);
-        assertEquals(result.getClientId(),"456");
-        assertEquals(result.getUserId(),2L);
-        assertEquals(result.getOrganizationId(),1L);
+        assertEquals(2L,result.getId());
+        assertEquals("456",result.getClientId());
+        assertEquals(2L,result.getUserId());
+        assertEquals(1L,result.getOrganizationId());
         verify(credentialsRepository).findById(id);
         verify(credentialsRepository).save(any());
     }

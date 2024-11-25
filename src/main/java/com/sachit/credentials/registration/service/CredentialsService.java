@@ -57,7 +57,7 @@ public class CredentialsService {
      * @throws CredentialNotFoundException Credential not found for the given id
      */
     public CredentialsResponseDTO getCredentialById(Long id) throws CredentialNotFoundException {
-        log.debug("Inside getCredentialById: ", id);
+        log.debug("Inside getCredentialById: {}", id);
         Optional<Credentials> credential = credentialsRepository.findById(id);
         if(credential.isPresent()) {
             //masking the client secret
@@ -74,7 +74,7 @@ public class CredentialsService {
      * @return Credential Response
      */
     public CredentialsResponseDTO createCredentials(CredentialsRequestDTO request) {
-        log.debug("Inside createCredentials: ",request);
+        log.debug("Inside createCredentials: {}",request);
         Credentials credential = credentialsMapper.toCredentials(request);
         credential.setClientId(generateClientId(credential.getUserId(),credential.getOrganizationId()));
         credential.setClientSecret(generateClientSecret());
@@ -92,7 +92,7 @@ public class CredentialsService {
      * @throws CredentialNotFoundException Credential not found for the given id
      */
     public CredentialsResponseDTO updateCredentialsById(Long id) throws CredentialNotFoundException {
-        log.debug("Inside updateCredentialsById: ",id);
+        log.debug("Inside updateCredentialsById: {}",id);
         Optional<Credentials> credential = credentialsRepository.findById(id);
         if(credential.isPresent()) {
             credential.get().setClientSecret(generateClientSecret());
@@ -110,7 +110,7 @@ public class CredentialsService {
      * @throws CredentialNotFoundException Credential not found for the given id
      */
     public void deleteCredentialById(Long id) throws CredentialNotFoundException {
-        log.debug("Inside deleteCredentialById: ",id);
+        log.debug("Inside deleteCredentialById: {}",id);
         if(credentialsRepository.existsById(id))
             credentialsRepository.deleteById(id);
         else
@@ -126,7 +126,7 @@ public class CredentialsService {
      */
     private static String generateClientId(Long userId, Long organizationId){
         long epochTime = System.currentTimeMillis();
-        log.debug("Time at which Client Id was generated is: ",epochTime);
+        log.debug("Time at which Client Id was generated is: {}",epochTime);
         return userId+"-"+organizationId+"-"+epochTime;
 
     }

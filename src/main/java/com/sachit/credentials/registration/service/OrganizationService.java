@@ -46,7 +46,7 @@ public class OrganizationService {
      * @throws OrganizationNotFoundException Organization is not found for given id
      */
     public OrganizationResponseDTO getOrganizationById(Long id) throws OrganizationNotFoundException {
-        log.debug("Inside getOrganizationById: ",id);
+        log.debug("Inside getOrganizationById: {}",id);
         Optional<Organization> organization = organizationRepository.findById(id);
         if(organization.isPresent()) {
             return organizationMapper.toOrganizationResponseDTO(organization.get());
@@ -61,7 +61,7 @@ public class OrganizationService {
      * @return newly created Organization
      */
     public OrganizationResponseDTO createOrganization(OrganizationRequestDTO request) {
-        log.debug("Inside createOrganization: ",request);
+        log.debug("Inside createOrganization: {}",request);
         Organization organization = organizationMapper.toOrganization(request);
             return organizationMapper.toOrganizationResponseDTO(organizationRepository.save(organization));
     }
@@ -75,7 +75,7 @@ public class OrganizationService {
      * @throws OrganizationNotFoundException Organization is not found for given id
      */
     public OrganizationResponseDTO updateOrganizationById(Long id, OrganizationRequestDTO request) throws OrganizationNotFoundException {
-        log.debug("Inside updateOrganizationById: ",id);
+        log.debug("Inside updateOrganizationById: {}",id);
         if(organizationRepository.existsById(id)) {
             Organization organization = organizationMapper.toOrganization(request);
             organization.setId(id);
@@ -91,7 +91,7 @@ public class OrganizationService {
      * @throws OrganizationNotFoundException Organization is not found for given id
      */
     public void deleteOrganizationById(Long id) throws OrganizationNotFoundException {
-        log.debug("Inside deleteOrganizationById: ",id);
+        log.debug("Inside deleteOrganizationById: {}",id);
         if(organizationRepository.existsById(id))
             organizationRepository.deleteById(id);
         else

@@ -1,7 +1,6 @@
 package com.sachit.credentials.registration.service;
 
 import com.sachit.credentials.registration.entity.User;
-import com.sachit.credentials.registration.entity.UserOrganizationMapping;
 import com.sachit.credentials.registration.exception.UserNotFoundException;
 import com.sachit.credentials.registration.mapper.UserMapper;
 import com.sachit.credentials.registration.model.UserRequestDTO;
@@ -50,7 +49,7 @@ public class UserService {
      * @throws UserNotFoundException User is not found for given id
      */
     public UserResponseDTO getUserById(Long id) throws UserNotFoundException {
-        log.debug("Inside getUserById: ",id);
+        log.debug("Inside getUserById: {}",id);
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent()) {
             return convertUserToUserResponseDTO(user.get());
@@ -59,14 +58,15 @@ public class UserService {
     }
 
     /**
-     * This method creates User based on requested data
+     * This method creates User based on requested data if user is not present
+     * Otherwise, returns the existing user and its associated organizations
      *
      * @param request of the user details
-     * @return Newly Created User
+     * @return Newly Created or Existing User
      */
     @Transactional
     public UserResponseDTO handleLogin(UserRequestDTO request) {
-        log.debug("Inside handleLogin: "+request);
+        log.debug("Inside handleLogin: {}",request);
         User existingUser = userRepository.findBySubjectId(request.getSubjectId());
         if(existingUser != null)
             return convertUserToUserResponseDTO(existingUser);
@@ -83,7 +83,7 @@ public class UserService {
      * @throws UserNotFoundException User is not found for given id
      */
     public UserResponseDTO updateUserById(Long id, UserRequestDTO request) throws UserNotFoundException {
-        log.debug("Inside updateUserById: ",id);
+        log.debug("Inside updateUserById: {}",id);
         if(userRepository.existsById(id)) {
             User user = userMapper.toUser(request);
             user.setId(id);
@@ -100,7 +100,7 @@ public class UserService {
      */
     @Transactional
     public void deleteUserById(Long id) throws UserNotFoundException {
-        log.debug("Inside deleteUserById: ",id);
+        log.debug("Inside deleteUserById: {}",id);
         if(userRepository.existsById(id)) {
             //Delete user from User
             userRepository.deleteById(id);
@@ -118,7 +118,7 @@ public class UserService {
      * @return User Response DTO containing Org related data
      */
     private UserResponseDTO convertUserToUserResponseDTO(User user) {
-        log.debug("Inside convertUserToUserResponseDTO: ",user);
+        log.debug("Inside convertUserToUserResponseDTO: {}",user);
         UserResponseDTO userResponseDTO = userMapper.toUserResponseDTO(user);
         userResponseDTO.setOrganizations(userOrganizationMappingService.getAllOrganizationsByUserId(user.getId()));
         return userResponseDTO;
